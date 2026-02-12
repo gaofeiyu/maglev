@@ -1,0 +1,113 @@
+<task id="_bmad/core/workflows/advanced-elicitation/workflow.xml" name="Advanced Elicitation" standalone="true"
+  methods="{project-root}/_bmad/core/workflows/advanced-elicitation/methods.csv"
+  agent-party="{project-root}/_bmad/_config/agent-manifest.csv">
+  <llm critical="true">
+    <i>强制性: 严格按顺序执行流程部分的所有步骤</i>
+    <i>不要: 跳过步骤或更改顺序</i>
+    <i>立即停止: 当满足停止条件时</i>
+    <i>step xml标签内的每个action xml标签都是完成该步骤的必需操作</i>
+    <i>流程之外的部分 (validation, output, critical-context) 提供基本上下文 - 在整个执行过程中审查并应用</i>
+    <i>你必须始终使用配置的 `communication_language` 以你的 Agent 沟通风格输出语言</i>
+  </llm>
+
+  <integration description="When called from workflow">
+    <desc>在模板工作流处理期间调用时:</desc>
+    <i>1. 接收或审查刚刚生成的当前部分内容，或</i>
+    <i>2. 迭代应用诱导方法以增强该特定内容</i>
+    <i>3. 当用户选择 'x' 继续并返回时，返回增强版本</i>
+    <i>4. 增强的内容将替换输出文档中的原始部分内容</i>
+  </integration>
+
+  <flow>
+    <step n="1" title="Method Registry Loading">
+      <action>加载并读取 {{methods}} 和 {{agent-party}}</action>
+
+      <csv-structure>
+        <i>category: 方法分组 (core, structural, risk, etc.)</i>
+        <i>method_name: 方法的显示名称</i>
+        <i>description: 关于方法做什么、何时使用以及为什么有价值的丰富解释</i>
+        <i>output_pattern: 使用 → 箭头的灵活流程指南 (例如, "analysis → insights → action")</i>
+      </csv-structure>
+
+      <context-analysis>
+        <i>利用对话历史</i>
+        <i>分析: 内容类型、复杂性、利益相关者需求、风险级别和创造潜力</i>
+      </context-analysis>
+
+      <smart-selection>
+        <i>1. 分析上下文: 内容类型、复杂性、利益相关者需求、风险级别、创造潜力</i>
+        <i>2. 解析描述: 从 CSV 中的丰富描述中理解每个方法的目的</i>
+        <i>3. 选择 5 种方法: 根据描述选择最符合上下文的方法</i>
+        <i>4. 平衡方法: 适当地混合基础和专业技术</i>
+      </smart-selection>
+    </step>
+
+    <step n="2" title="Present Options and Handle Responses">
+
+      <format>
+        **高级诱导选项 (如果你启动了派对模式，他们将随机参与)**
+        选择一个数字 (1-5)，[r] 重新洗牌，[a] 列出所有，或 [x] 继续:
+
+        1. [Method Name]
+        2. [Method Name]
+        3. [Method Name]
+        4. [Method Name]
+        5. [Method Name]
+        r. 用 5 个新选项重新洗牌列表
+        a. 列出所有方法及其描述
+        x. 继续 / 无进一步操作
+      </format>
+
+      <response-handling>
+        <case n="1-5">
+          <i>使用 CSV 中的描述执行所选方法</i>
+          <i>根据当前上下文调整方法的复杂性和输出格式</i>
+          <i>创造性地将该方法应用于当前正在增强的部分内容</i>
+          <i>显示增强版本，展示该方法揭示或改进了什么</i>
+          <i>关键: 询问用户是否愿意将更改应用到文档 (y/n/other) 并停止以等待响应。</i>
+          <i>关键: 仅当 Yes 时，应用更改。如果是 No，丢弃你对提议更改的记忆。如果是其他回复，尽量遵循用户给出的指示。</i>
+          <i>关键: 重新呈现相同的 1-5,r,x 提示，以允许额外的诱导</i>
+        </case>
+        <case n="r">
+          <i>从 advanced-elicitation-methods.csv 中随机选择 5 种方法，使用相同的提示格式呈现新列表</i>
+          <i>选择时，尝试思考并挑选涵盖不同类别和方法的各种方法，其中 1 和 2 可能对正在发现的文档或部分最有用</i>
+        </case>
+        <case n="x">
+          <i>完成诱导并继续</i>
+          <i>将完全增强的内容返回给 create-doc.md</i>
+          <i>增强的内容成为该部分的最终版本</i>
+          <i>向 create-doc.md 发出完成信号，以继续下一部分</i>
+        </case>
+        <case n="a">
+          <i>在一个紧凑的表格中列出 CSV 中的所有方法及其描述</i>
+          <i>允许用户按名称或编号从完整列表中选择任何方法</i>
+          <i>选择后，按照上述 n="1-5" 情况中的描述执行该方法</i>
+        </case>
+        <case n="direct-feedback">
+          <i>将更改应用于当前部分内容并重新提供选择</i>
+        </case>
+        <case n="multiple-numbers">
+          <i>在内容上按顺序执行方法，然后重新提供选择</i>
+        </case>
+      </response-handling>
+    </step>
+
+    <step n="3" title="Execution Guidelines">
+      <i>方法执行: 使用 CSV 中的描述来理解和应用每种方法</i>
+      <i>输出模式: 将模式用作灵活指南 (例如, "paths → evaluation → selection")</i>
+      <i>动态适应: 根据内容需求调整复杂性 (从简单到复杂)</i>
+      <i>创造性应用: 根据上下文灵活解释方法，同时保持模式一致性</i>
+      <i>专注于可操作的见解</i>
+      <i>保持相关: 将诱导与正在分析的具体内容联系起来 (正在创建的文档中的当前部分，除非用户另有说明)</i>
+      <i>识别角色: 对于单人或多人角色方法，清楚地识别观点，如果内存中已有派对成员，则使用他们</i>
+      <i>关键循环行为: 每次执行方法后，始终重新提供 1-5,r,a,x 选择</i>
+      <i>继续直到用户选择 'x' 以继续使用增强的内容，确认或询问用户应从会话中接受什么</i>
+      <i>每次方法应用都建立在之前的增强基础之上</i>
+      <i>内容保存: 跟踪诱导期间所做的所有增强</i>
+      <i>迭代增强: 每个选定的方法 (1-5) 应该:</i>
+      <i> 1. 应用于当前增强版本的内容</i>
+      <i> 2. 显示所做的改进</i>
+      <i> 3. 返回提示以进行额外的诱导或完成</i>
+    </step>
+  </flow>
+</task>

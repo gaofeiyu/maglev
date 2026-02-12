@@ -1,0 +1,18 @@
+# Maglev 用户画像配置 (User Profile)
+# 请将此文件复制为 '.maglev/user.yaml' (已配置 gitignore)
+
+# 1. 身份 (Identity)
+user_name: "您的名字"    # 例如: "Feiyu"
+role: "TP"              # 角色: VO (价值所有者), TP (技术领航员), XG (体验守护者)
+language: "zh-CN"       # AI 交互语言
+
+# 2. 上下文 (Context)
+# AI 回答问题时会优先关注这些上下文
+current_focus:
+  - "feat-auth"         # specs/20_evolution/active/ 下的文件夹名称
+  - "fix-login-crash"
+
+# 3. 偏好 (Preferences)
+preferences:
+  code_style: "Concise" # Concise (简洁), Verbose (详细), Tutorial (教程)
+  framework: "React"    # 您的主要技术栈偏好

@@ -1,0 +1,51 @@
+# Maglev AI 上下文地图 (llms.txt)
+
+> **身份定义**: 你是 **Maglev 操作系统** 的执行代理 (Agent)。
+> **最高指令**: 请始终使用 **中文** 回复。编码前必须加载 `specs/` 下的相关规格。
+
+## 1. 快速开始 (Quick Start)
+
+不要试图一次性读取所有文件。Maglev 使用 **"Atlas (地图)"** 和 **"Slash Commands (指令)"** 来导航。
+
+### 🎮 核心指令 (Magic Commands)
+优先使用 IDE 的 Slash Commands (Workflows) 与项目交互，而非手动寻找文件。
+
+| 指令 | 用途 | 对应技能 |
+| :--- | :--- | :--- |
+| **`/map`** | **Where am I?**<br>生成项目全景地图 (Atlas)。 | `maglev-map-maker` |
+| **`/standup`** | **What's up?**<br>每日站会，快速加载上下文 (Space/Mind/Action)。 | `maglev-standup` |
+| **`/init`** | **Bootstrap**<br>初始化新项目或接入存量项目。 | `maglev-bootstrapper` |
+| **`/create-spec`** | **New Feature**<br>通过访谈生成技术方案 (Spec)。 | `maglev-create-spec` |
+
+### 🧭 导航系统 (Maglev Atlas)
+*   **项目地图**: `docs/ATLAS.md` (运行 `/map` 生成)。这是你的上帝视角。
+*   **当前任务**: `task.md` (Checklist)。这是你的行动指南。
+
+## 2. 核心法则 (The Iron Rules)
+
+完整规则：[solutions/starter-kit/.maglev/rules/core_rules.md](solutions/starter-kit/.maglev/rules/core_rules.md)
+
+1.  **Spec First (规格优先)**: 禁止在没有 Spec 的情况下直接修改业务代码 (Fix Bug 除外)。
+2.  **Context is King (上下文为王)**: 必须先读取 `00_context.md` 或相关 Spec，再开始编码。
+3.  **Use Workflows**: 遇到复杂任务 (如 "写个PRD" 或 "审查代码")，优先检查 `.agent/workflows/` 是否有对应的 `/` 指令。
+
+## 3. 文件体系 (File System)
+
+Maglev 采用 **Johnny Decimal** 变体结构：
+
+| 目录 | 用途 | 关键文件 |
+| :--- | :--- | :--- |
+| **`specs/`** | **真理 (Truth)**。生效的需求与方案。 | `01_requirements.md`, `02_design.md` |
+| **`docs/thinking/`** | **大脑 (Mind)**。决策日志与架构思考。 | `00_meta/`, `20_architecture/` |
+| **`solutions/`** | **能力 (Solutions)**。Starter Kit 与 Skills。 | `starter-kit/`, `skills/` |
+| **`.agent/`** | **引擎 (Engine)**。AI 技能与工作流配置。 | `workflows/*.md`, `skills/SKILL.md` |
+| **`issues/`** | **意图 (Intent)**。原始需求与Bug的入口。 | `active/`, `README.md` (Dashboard) |
+
+## 4. 接入指南 (Adoption)
+
+*   **我是怎么来的?**: 见 `README.md`。
+*   **这是新项目**: 见 `solutions/guides/00_start/project_startup_manuals.md` (Track A)。
+*   **这是老项目**: 见 `solutions/guides/00_start/project_startup_manuals.md` (Track B: Workstation Mode)。
+
+---
+*Created for AI Agents (Cursor/Trae/Windsurf/Copilot). Updated: 2026-02-12*
