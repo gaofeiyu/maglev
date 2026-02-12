@@ -3,7 +3,8 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 > **"Unlearn, to Relearn."**
-> Maglev 不仅仅是一套文档，它是一套让 AI 指挥 IDE、让工程师回归架构、让产品经理定义灵魂的 **"人机协作操作系统"**。
+> Maglev 是基于 [**Zhiyin (知音)**](https://github.com/gaofeiyu/zhiyin) 思考框架构建的 AI 原生操作系统。
+> 它不仅仅是一套文档，它是一套让 AI 指挥 IDE、让工程师回归架构、让产品经理定义灵魂的 **"人机协作操作系统"**。
 
 ---
 
